@@ -54,7 +54,7 @@ class userController
     {
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
         $stmt = $this->conn->prepare("SELECT * FROM users where email=?");
-        $stmt->bind("s",$email");
+        $stmt->bind("s",$email);
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows() > 0) {
