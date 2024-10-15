@@ -9,5 +9,5 @@ COPY index.php index.php
 COPY index.html index.html
 COPY listing-controller.php listing-controller.php
 COPY user-controller.php user-controller.php
-COPY databse.php databse.php
+COPY database.php database.php
 EXPOSE 80
