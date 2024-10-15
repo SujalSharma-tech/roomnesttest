@@ -5,8 +5,6 @@ require_once('./database.php');
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\JWTExceptionWithPayloadInterface;
-
-header('Content-Type: application/json');
 class userController
 {
     private $conn;
@@ -34,7 +32,7 @@ class userController
         );
 
         $token =  JWT::encode($payload, $secretkey, "HS256");
-        setcookie("token", $token, $expirationTime, "/");
+        setcookie("token", $token, $expirationTime, "/","",true,true);
         return $token;
     }
 
