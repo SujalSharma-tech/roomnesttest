@@ -15,7 +15,6 @@ $db = new Database();
 $conn = $db->getConnection();
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
-echo $uri,"<br>";
 
 $user_controller = new UserController($conn);
 $listing_controller = new ListingController($conn);
