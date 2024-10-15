@@ -54,14 +54,14 @@ class userController
     {
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
         $stmt = $this->conn->prepare("SELECT * FROM users where email=?");
-        $stmt->bind("s",$email);
+        $stmt->bind_param("s",$email);
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows() > 0) {
             echo json_encode(["success" => false, "message" => "User already exists"]);
         } else {
             $stmt = $this->conn->prepare("INSERT INTO users (first_name,last_name,email,password) VALUES(?,?,?,?)");
-            $stmt->bind("ssss",$first_name, $last_name, $email, $hashed_password);
+            $stmt->bind_param("ssss",$first_name, $last_name, $email, $hashed_password);
             if ($stmt->execute()) {
                 $currId = $this->conn->insert_id;
                 $userId = md5($currId);
@@ -88,7 +88,7 @@ class userController
     public function login($email, $password)
     {
         $stmt = $this->conn->prepare("SELECT * FROM users where email=?");
-        $stmt->bind("s",$email);
+        $stmt->bind_param("s",$email);
         $stmt->execute();
         $data = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
         if ($data) {
@@ -122,7 +122,7 @@ class userController
             if ($decoded) {
                 $userId = $decoded->id;
                 $stmt = $this->conn->prepare("SELECT id, first_name, last_name, email FROM users Where user_id=?");
-                $stmt->bind("s",$userId);
+                $stmt->bind_param("s",$userId);
                 $stmt->execute();
                 $data = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
                 echo json_encode([
