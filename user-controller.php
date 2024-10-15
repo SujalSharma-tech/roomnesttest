@@ -54,13 +54,15 @@ class userController
     {
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
         $stmt = $this->conn->prepare("SELECT * FROM users where email=?");
-        $stmt->execute([$email]);
+        $stmt->bind("s",$email");
+        $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows() > 0) {
             echo json_encode(["success" => false, "message" => "User already exists"]);
         } else {
             $stmt = $this->conn->prepare("INSERT INTO users (first_name,last_name,email,password) VALUES(?,?,?,?)");
-            if ($stmt->execute([$first_name, $last_name, $email, $hashed_password])) {
+            $stmt->bind("ssss",$first_name, $last_name, $email, $hashed_password);
+            if ($stmt->execute()) {
                 $currId = $this->conn->insert_id;
                 $userId = md5($currId);
                 $stmt = $this->conn->prepare("UPDATE users SET user_id=? WHERE id=?");
@@ -86,7 +88,8 @@ class userController
     public function login($email, $password)
     {
         $stmt = $this->conn->prepare("SELECT * FROM users where email=?");
-        $stmt->execute([$email]);
+        $stmt->bind("s",$email);
+        $stmt->execute();
         $data = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
         if ($data) {
             if (password_verify($password, $data['password'])) {
@@ -119,7 +122,8 @@ class userController
             if ($decoded) {
                 $userId = $decoded->id;
                 $stmt = $this->conn->prepare("SELECT id, first_name, last_name, email FROM users Where user_id=?");
-                $stmt->execute([$userId]);
+                $stmt->bind("s",$userId);
+                $stmt->execute();
                 $data = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
                 echo json_encode([
                     "success" => true,
