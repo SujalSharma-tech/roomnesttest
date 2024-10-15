@@ -36,7 +36,8 @@ class ListingController
             if ($decoded) {
                 $userId = $decoded->id;
                 $stmt = $this->conn->prepare("INSERT INTO listings (title,description,no_of_rooms,rent,address,city,state,postal_code,wifi,user_id) VALUES(?,?,?,?,?,?,?,?,?,?)");
-                if ($stmt->execute([$title, $desc, $no_of_rooms, $rent, $address, $city, $state, $postal, $wifi, $userId])) {
+                $stmt->bind("ssidssssii",$title, $desc, $no_of_rooms, $rent, $address, $city, $state, $postal, $wifi, $userId);
+                if ($stmt->execute()) {
                     echo json_encode([
                         "success" => true,
                         "message" => "Listing Created Successfully"
