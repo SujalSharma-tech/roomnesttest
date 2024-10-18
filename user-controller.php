@@ -64,7 +64,8 @@ class userController
                 $currId = $this->conn->insert_id;
                 $userId = md5($currId);
                 $stmt = $this->conn->prepare("UPDATE users SET user_id=? WHERE id=?");
-                $stmt->execute([$userId, $currId]);
+                $stmt->bind_param("ss",$userId,$currId);
+                $stmt->execute();
                 $token = userController::generateToken($userId, $email);
                 if ($token) {
                     echo json_encode([
