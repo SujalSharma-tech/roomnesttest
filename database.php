@@ -2,9 +2,9 @@
 
 class Database
 {
-    private $host = "ec2-13-202-214-195.ap-south-1.compute.amazonaws.com";
-    private $db_name = "users";
-    private $username = "sujal";
+    private $host = "databaseroomnest.c3u4826aedy4.ap-south-1.rds.amazonaws.com";
+    private $db_name = "roomnest";
+    private $username = "admin";
     private $password = "#2004Sujal#";
     private $conn;
     public function getConnection()
