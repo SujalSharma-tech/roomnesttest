@@ -1,0 +1,34 @@
+CREATE TABLE listings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(50) UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    property_type ENUM('Room', 'Apartment', 'Shared Space', 'House') DEFAULT 'Room',
+    room_type ENUM('Private Room', 'Shared Room', 'Entire Apartment') DEFAULT 'Private Room', 
+    no_of_rooms INT DEFAULT 1,
+
+    rent DECIMAL(10,2) NOT NULL,
+    deposit DECIMAL(10,2) DEFAULT 0,
+
+    address VARCHAR(255) NOT NULL,              -- Street address of the listing
+    city VARCHAR(100) NOT NULL,                 -- City
+    state VARCHAR(100) NOT NULL,                -- State
+    postal_code VARCHAR(20) NOT NULL,           -- Postal/ZIP code
+    latitude DECIMAL(10, 7) DEFAULT NULL,       -- Latitude for mapping
+    longitude DECIMAL(10, 7) DEFAULT NULL,      -- Longitude for mapping
+
+    furnished BOOLEAN DEFAULT FALSE,            -- Whether the property is furnished
+    wifi BOOLEAN DEFAULT FALSE,                 -- Whether the property has Wi-Fi
+    pets_allowed BOOLEAN DEFAULT FALSE,         -- Whether pets are allowed
+    utilities_included BOOLEAN DEFAULT FALSE,   -- Whether utilities are included in the rent
+    parking BOOLEAN DEFAULT FALSE,              -- Whether parking is available
+    laundry BOOLEAN DEFAULT FALSE,              -- Whether laundry facilities are available
+
+    main_photo VARCHAR(255) DEFAULT NULL,       -- URL for the main photo of the listing
+    additional_photos JSON DEFAULT NULL,
+    is_active BOOLEAN DEFAULT TRUE,             -- Whether the listing is currently active
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE -- User who posted the listing
+);
